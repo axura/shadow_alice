@@ -29,30 +29,34 @@ sub checkPrint{
   return @lines;
 }
 
-#converts the variables
-sub convertVariables{
-  my @lines = @_;
+sub convertVar{
+  @lines = @_;
+  my %var = ();
   foreach $line (@lines){
-    if($line =~ /([a-z_0-9]).*? =/){
-      $line =~ s/^/\$/gi;
-    }
-    elsif($line =~ /print/ig) {
-        if ($line =~ /([a-z_0-9].*?)/cig){        
-          $variable = $1;
-          $line =~ s/$variable/\$$variable/gi;
+    if ($line =~ /(\w+) =/cig){
+      $variable = $1;
+      print "$1\n";
+      $var{$variable} = $variable;
+      $line =~ s/$variable/\$$variable/ig;
+    } else {
+      @words = split(' ',$line);
+      foreach $word (@words){
+        if ($word =~ /(\w+)/cig){
+          $word = $1;
+          if (defined($var{$word})){
+          $line =~ s/$word/\$$word/ig
+          }
         }
       }
     }
+  }
   return @lines;
 }
 
 @code = &checkPrint(@code);
 @code = &semicolon(@code); #convert this at the very last
-@code = &convertVariables(@code);
-
-
+@code = &convertVar(@code);
 
 foreach $line (@code){
   print "$line"
 }
-
