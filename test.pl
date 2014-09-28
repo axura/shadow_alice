@@ -4,12 +4,14 @@
 $code[0] =~ s/python/perl -w/ig;
 
 %functions = (
-#  "print" => "print",
   "if" => "if",
   "else" => "else",
   "while" => "while",
+);
+
+%loopfunctions = (
   "break" => "last",
-  "continue" => "next"
+  "continue" => "next",
 );
 
 sub semicolon{
@@ -62,10 +64,14 @@ sub defaultFunctions {
   foreach $line (@lines){
     if ($line =~ /(\w+)/ig){
       $function = $1;
-      if (defined($functions{$function})){
+      if (defined($functions{$function})and !(defined($loopfunctions{$function}))){
         $line =~ s/$function/$function(/ig;
         $line =~ s/:/){/ig;
-        $line =~ s/\n/}\n/ig;
+        $line =~ s/;/;}/ig;
+      }else {
+        if (defined($loopfunctions{$function})){
+          $line =~ s/$function/$loopfunctions{$function}/ig;
+        }
       }
     }  
   }
