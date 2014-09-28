@@ -47,7 +47,7 @@ sub checkPrint{
 
 sub convertVar{
   my @lines = @_;
-  my %var = ();
+  %var = ();
   foreach $line (@lines){
     if ($line =~ /(\w+) =/cig){
       $variable = $1;
@@ -68,6 +68,17 @@ sub convertVar{
   return @lines;
 }
 
+#works but need to add it to somewhere where there are string comparators
+sub checkcmp{
+  my $check = $line;
+  if ($check =~ /(\w+) ([<>=].*?) \w+\)/ig){
+    #$arg1 = $1
+    $comp = $2;
+    print "$comp\n";
+      $check =~ s/$comp/$strcmp{$comp}/ig;
+  }
+  print "$check \n";
+}
 
 #converts default functions such as while or if
 sub defaultFunctions {
