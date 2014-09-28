@@ -14,6 +14,16 @@ $code[0] =~ s/python/perl -w/ig;
   "continue" => "next",
 );
 
+%strcmp = {
+  "<>" => "ne",
+  "<" => "lt",
+  ">" => "gt",
+  "<=" => "le",
+  ">=" => "ge",
+  "==" => "eq",
+  "!=" => "ne"
+}
+
 sub semicolon{
   my @lines = @_;
   foreach $line (@lines){
