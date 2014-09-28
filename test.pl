@@ -8,12 +8,16 @@ $code[0] =~ s/python/perl -w/ig;
   "if" => "if",
   "else" => "else",
   "while" => "while",
+  "break" => "last",
+  "continue" => "next"
 );
 
 sub semicolon{
   my @lines = @_;
   foreach $line (@lines){
-    $line =~ s/\n/;\n/gi if ($line ne "\^\n")&&($line ne $code[0]);
+    if (!($line =~ /^\s*#/ig)and !($line =~ /^\s*$/ig)){
+      $line =~ s/\n/;\n/gi if($line ne $code[0]);
+    }
   }
   return @lines;
 }
@@ -23,7 +27,7 @@ sub checkPrint{
   foreach $line (@lines){
     if ($line =~ /print/cgi){
       $line =~ s/,/," ",/ig;
-      $line =~ s/\n/,"\\n"/ig;
+      $line =~ s/\n/,"\\n";/ig;
     }
   }
   return @lines;
@@ -71,7 +75,7 @@ sub defaultFunctions {
 @code = &checkPrint(@code);
 @code = &semicolon(@code); #convert this at the very last
 @code = &convertVar(@code);
-#@code = &defaultFunctions(@code);
+@code = &defaultFunctions(@code);
 
 foreach $line (@code){
   print "$line"
