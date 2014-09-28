@@ -3,17 +3,17 @@
 @code = <STDIN>;
 $code[0] =~ s/python/perl -w/ig;
 
-#%function = {
+%functions = (
 #  "print" => "print",
-#  "if" => "if",
-#  "else" => "else",
-#  "while" => "while",
-#};
+  "if" => "if",
+  "else" => "else",
+  "while" => "while",
+);
 
 sub semicolon{
   my @lines = @_;
   foreach $line (@lines){
-    $line =~ s/\n/;\n/gi if ($line ne "\n")&&($line ne $code[0]);
+    $line =~ s/\n/;\n/gi if ($line ne "\^\n")&&($line ne $code[0]);
   }
   return @lines;
 }
@@ -30,12 +30,11 @@ sub checkPrint{
 }
 
 sub convertVar{
-  @lines = @_;
+  my @lines = @_;
   my %var = ();
   foreach $line (@lines){
     if ($line =~ /(\w+) =/cig){
       $variable = $1;
-      print "$1\n";
       $var{$variable} = $variable;
       $line =~ s/$variable/\$$variable/ig;
     } else {
@@ -53,9 +52,26 @@ sub convertVar{
   return @lines;
 }
 
+#converts default functions such as while or if
+sub defaultFunctions {
+  my @lines = @_;
+  foreach $line (@lines){
+    if ($line =~ /(\w+)/ig){
+      $function = $1;
+      if (defined($functions{$function})){
+        $line =~ s/$function/$function(/ig;
+        $line =~ s/:/){/ig;
+        $line =~ s/\n/}\n/ig;
+      }
+    }  
+  }
+  return @lines;
+}
+
 @code = &checkPrint(@code);
 @code = &semicolon(@code); #convert this at the very last
 @code = &convertVar(@code);
+#@code = &defaultFunctions(@code);
 
 foreach $line (@code){
   print "$line"
