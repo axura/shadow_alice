@@ -14,7 +14,7 @@ $code[0] =~ s/python/perl -w/ig;
   "continue" => "next",
 );
 
-%strcmp = {
+%strcmp = (
   "<>" => "ne",
   "<" => "lt",
   ">" => "gt",
@@ -22,7 +22,7 @@ $code[0] =~ s/python/perl -w/ig;
   ">=" => "ge",
   "==" => "eq",
   "!=" => "ne"
-}
+);
 
 sub semicolon{
   my @lines = @_;
@@ -67,6 +67,7 @@ sub convertVar{
   }
   return @lines;
 }
+
 
 #converts default functions such as while or if
 sub defaultFunctions {
