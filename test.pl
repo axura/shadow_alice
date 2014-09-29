@@ -24,6 +24,8 @@ $code[0] =~ s/python/perl -w/ig;
   "!=" => "ne"
 );
 
+%vartype = ();
+
 sub semicolon{
   my @lines = @_;
   foreach $line (@lines){
@@ -49,8 +51,16 @@ sub convertVar{
   my @lines = @_;
   %var = ();
   foreach $line (@lines){
-    if ($line =~ /(\w+) =/cig){
+    if ($line =~ /(\w+) = ([a-z0-9].*?)/cig){
       $variable = $1;
+      $type = $2;
+      if ($type =~ /\w+/){
+        $type = "str";
+      } else {
+        $type = "num";
+      }
+
+      $vartype{$variable}{$data} = $type;
       $var{$variable} = $variable;
       $line =~ s/$variable/\$$variable/ig;
     } else {
@@ -87,9 +97,9 @@ sub defaultFunctions {
     if ($line =~ /(\w+)/ig){
       $function = $1;
       if (defined($functions{$function})and !(defined($loopfunctions{$function}))){
+        $line =~ s/$/}/ig;
         $line =~ s/$function/$function(/ig;
         $line =~ s/:/){/ig;
-        $line =~ s/;/;}/ig;
       }else {
         if (defined($loopfunctions{$function})){
           $line =~ s/$function/$loopfunctions{$function}/ig;
