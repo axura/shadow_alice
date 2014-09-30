@@ -24,6 +24,16 @@ $code[0] =~ s/python/perl -w/ig;
   "!=" => "ne"
 );
 
+%numcmp = (
+  "<=>" => "!=",
+  "<" => "<",
+  ">" => ">",
+  "==" => "==",
+  "<=" => "<=",
+  "=>" => "=>",
+  "!=" => "!=",
+);
+
 %vartype = ();
 
 sub semicolon{
@@ -97,9 +107,10 @@ sub defaultFunctions {
     if ($line =~ /(\w+)/ig){
       $function = $1;
       if (defined($functions{$function})and !(defined($loopfunctions{$function}))){
-        $line =~ s/$/}/ig;
+        $line =~ s/;$/;}/ig;
         $line =~ s/$function/$function(/ig;
-        $line =~ s/:/){/ig;
+	$line =~ s/;[\s]*/;\n/ig;
+        $line =~ s/:/){\n/ig;
       }else {
         if (defined($loopfunctions{$function})){
           $line =~ s/$function/$loopfunctions{$function}/ig;
@@ -109,6 +120,24 @@ sub defaultFunctions {
   }
   return @lines;
 }
+
+#sub sysmodule{
+#  my @lines = @_;
+#  my $sysChange = 0;
+#  foreach $line (@lines){
+#    if ($line =~ /import ([a-z]+)/){
+#      $module = $1;
+#      if ($module =~ /sys/){
+#        $sysChange = 1;
+#      }
+#    } elsif( ($sysChange == 1) and ($line =~ /sys\.stdout\.write\([(a-z0-9].*?)\)/){
+#      $var = $1;
+#      $line =~ s/sys\.stdout\.write/chomp/ig
+#      $line =~ s/\n/\nprint $var,"\n";\n/ig;
+#    }
+#  }
+#}
+
 
 @code = &checkPrint(@code);
 @code = &semicolon(@code); #convert this at the very last
