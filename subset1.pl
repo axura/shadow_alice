@@ -24,6 +24,16 @@ $code[0] =~ s/python/perl -w/ig;
   "!=" => "ne"
 );
 
+%numcmp = (
+  "<=>" => "!=",
+  "<" => "<",
+  ">" => ">",
+  "==" => "==",
+  "<=" => "<=",
+  "=>" => "=>",
+  "!=" => "!=",
+);
+
 %vartype = ();
 
 sub semicolon{
@@ -59,10 +69,11 @@ sub convertVar{
       } else {
         $type = "num";
       }
-
-      $vartype{$variable}{$data} = $type;
-      $var{$variable} = $variable;
-      $line =~ s/$variable/\$$variable/ig;
+      if (!defined($var{$variable})){
+      	$vartype{$variable}= $type;
+        $var{$variable} = $variable;
+        $line =~ s/$variable/\$$variable/ig;
+      }
     } else {
       @words = split(' ',$line);
       foreach $word (@words){
@@ -81,13 +92,18 @@ sub convertVar{
 #works but need to add it to somewhere where there are string comparators
 sub checkcmp{
   my $check = $line;
-  if ($check =~ /(\w+) ([<>=].*?) \w+\)/ig){
-    #$arg1 = $1
+  if ($check =~ /(\w+) ([<>=].*?) (\w+)/ig){
+    $arg1 = $1;
     $comp = $2;
-    print "$comp\n";
+    $arg2 = $3;
+    if (($arg1 =~ /\d+/) || ($arg2 =~ /\d+/)){
+      $check =~ s/$comp/$numcmp{$comp}/ig;
+    } else{
       $check =~ s/$comp/$strcmp{$comp}/ig;
+    }
   }
-  print "$check \n";
+#  print "new comparator: $check \n";
+  return $check;
 }
 
 #converts default functions such as while or if
@@ -101,6 +117,7 @@ sub defaultFunctions {
         $line =~ s/$function/$function(/ig;
 	$line =~ s/;[\s]*/;\n/ig;
         $line =~ s/:/){\n/ig;
+	$line = &checkcmp($line);
       }else {
         if (defined($loopfunctions{$function})){
           $line =~ s/$function/$loopfunctions{$function}/ig;
