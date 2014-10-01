@@ -10,6 +10,11 @@
 	"elif" => "elsif"
 );
 
+%loopfunctions = (
+	"break" => "last",
+	"continue" => "next",
+);
+
 %strcmp = (
   "<>" => "ne",
   "<" => "lt",
@@ -58,13 +63,13 @@ sub convert {
 			chomp($variable);
 			if (defined($var{$variable})){
 				if ($line =~ /\s$variable\s{1}/i){
-					print "1\n";
+				#	print "1\n";
 					$line =~ s/ $variable / \$$variable /;
 				} elsif ($line =~ /$variable[\w]{1}/i){
-					print "2\n";
+				#	print "2\n";
 					$line =~ s/ $variable / \$$variable/i;
 				} elsif (($line =~ /^$variable\s*=/i) && !($variable =~ /\$/i)){
-					print "3\n";
+				#	print "3\n";
 					$line =~ s/$variable/\$$variable/i; 
 				} else{
 					$line =~ s/$variable/\$$variable/i;
@@ -73,14 +78,22 @@ sub convert {
 		}
 
 		#differentiating if and while loops
+		#for single line loops only
 		if (!($line =~ /:[\s]*$/)){
 			if ($line =~ /^([\w]+)\s*/){
 				$function = $1;
 				if (defined($functions{$function})){
 					print "$functions{$function}\n";
+					$line =~ s/$function/$function(/ig;					
+        	$line =~ s/:\s/){\n\t/ig;
+					$line =~ s/\s*$/\n}/ig;
 				}
 			}
-		}
+		}else {
+        if (defined($loopfunctions{$function})){
+          $line =~ s/$function/$loopfunctions{$function}/ig;
+				}
+     }
 
 		#check for str and numerical comparators
 		if ($line =~ /(\w+) ([<>=].*?) (\w+)/ig){
@@ -99,7 +112,7 @@ sub convert {
 	  } elsif ($line =~ /^\s*print\s*"(.*)"\s*$/){
 		  	#$variable =~ $1;
       	$line =~ s/$/,"\\n";/ig;
-	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/){
+	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /\s*}\s*/){
 		  $changed = -1;
 	  } else{
 		  $changed = 1;
