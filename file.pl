@@ -11,6 +11,7 @@
 	"elif" => "elsif"
 );
 
+#need to fix for subset 1, answer3.py
 sub convertVar{
 		my $check = $line;
     if ($check =~ /(\w+) = ([a-z0-9].*)/cig){
@@ -18,14 +19,25 @@ sub convertVar{
       $type = $2;
       if ($type =~ /\w+/){
         $type = "str";
-      } else {
+      } elsif ($type =~ /\d+/) {
         $type = "num";
       }
+			
+			#printf"hash var\n";
+			#foreach $variable (keys %var){
+			#	printf "%s\n", $var{$variable};
+			#} 
       if (!defined($var{$variable})){
       	$vartype{$variable}= $type;
         $var{$variable} = $variable;
-        $check =~ s/$variable/\$$variable/ig;
-      }
+			}
+			@words = split(' ', $check);
+			foreach $word (@words){
+				if (defined($var{$word})){
+					$check =~ s/$word/\$$word/cig;
+				}
+			#$check =~ s/$word/\$$word/cig;
+			}
     } else {
       @words = split(' ',$line);
       foreach $word (@words){
@@ -60,7 +72,10 @@ sub convert {
 
 		#check for variables	  
     if ($line =~ /(\w+) = ([a-z0-9].*)/cig || $line =~ /(\w+)/ig){
-    	$line = &convertVar($line);
+			$word = $1;
+			if (!defined($functions{$word})){
+    		$line = &convertVar($line);
+			}
 		}
 
   }
@@ -73,31 +88,4 @@ sub convert {
 foreach $line (@lines){
 	print "$line\n";
 }
-=begin comment
- if ($line =~ /(\w+) = ([a-z0-9].*)/cig){
-      $variable = $1;
-      $type = $2;
-      if ($type =~ /\w+/){
-        $type = "str";
-      } else {
-        $type = "num";
-      }
-      if (!defined($var{$variable})){
-      	$vartype{$variable}= $type;
-        $var{$variable} = $variable;
-        $line =~ s/$variable/\$$variable/ig;
-      }
-    } else {
-      @words = split(' ',$line);
-      foreach $word (@words){
-        if ($word =~ /(\w+)/cig){
-          $word = $1;
-          if (defined($var{$word})){
-          $line =~ s/$word/\$$word/ig
-          }
-        }
-      }
-    }
-=end comment
-
 
