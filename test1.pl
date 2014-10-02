@@ -82,6 +82,12 @@ sub convert {
 			}
 		}
 
+		#checking for range()
+		if ($line =~ /range\(([0-9,]*)\)/){
+			$range_expr = $1;
+			print "$range_expr\n";
+		}
+
 		#differentiating if and while loops
 		#for single line loops only
 		if (!($line =~ /:[\s]*$/)){
@@ -145,10 +151,9 @@ sub convert {
   	}
 
 	  if ($line =~ /^#!/){
-		$line =~ s/python/perl -w/ig;
-	  } elsif ($line =~ /^\s*print\s*"(.*)"\s*$/){
-		  	#$variable =~ $1;
-      	$line =~ s/$/,"\\n";/ig;
+			$line =~ s/python/perl -w/ig;
+	  } elsif ($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i){	
+     	$line =~ s/$/,"\\n";/ig;
 	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		  $changed = -1;
 	  } else{
