@@ -55,6 +55,12 @@ sub convert {
 			}
 		}
 
+		#read the current indentation
+		if ($line =~ /^(\s*)/){
+			$curr_indentation = length($1);
+			$indentation = $1;
+		}
+
 		#comparator change for numerals:
 		$line =~ s/<=>/!=/ig;
 
@@ -93,24 +99,23 @@ sub convert {
 		}
 
 		#checking for multiline
-		if ($line =~ /^(\s*)/){
-			$curr_indentation = length($1);
-			if ($multiline_statement == 0){
-				$pre_indlen = $curr_indentation;
-				$indentation = $1;
-			} elsif ($curr_indentation > $pre_indlen){
-				$multiline_statement = 1;
-			} elsif ($curr_indentation == $pre_indlen && $multiline_statement == 1){
-				$line =~ s/^/$indentation}\n/i;
-				$multiline_statement = 0;
-			}
+		#print "curr: $curr_indentation pre: $pre_indlen\n";
+		#case: enters mutliline if/while loop
+		if ($pre_indlen < $curr_indentation){
+			$multiline_statement = 1;
 		}
+		#case: still in a multiline loop
+		elsif ($pre_indlen > $curr_indentation){
+			$line =~ s/^/$indentation}\n/i;
+		}
+
 
 		if ($line =~ /:\s*$/i){
 			if ($line =~ /^([\s]*)(\w+)/i){
 			#print "multiline: $line";
 				$function = $2;
 				$multiline_statement = 1;
+				$pre_indlen = length($1);
 				if (!($line =~ /else/)){ 
 					$line =~ s/$function/$function(/;
 					$line =~ s/:\s*$/ ){/i;
@@ -118,7 +123,8 @@ sub convert {
 					$line =~ s/:\s*$/ {/i;
 				}
 			}
-		} 
+		}
+		$pre_indlen = $curr_indentation; 
 	
 
 		#check for imported modules like sys. 
