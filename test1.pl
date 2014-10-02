@@ -70,17 +70,15 @@ sub convert {
 		#while ($line =~ m/\s+([\w+])\s*/ig || $line =~ m/^([\w+])\s*/ig){
 			chomp($variable);
 			if (defined($var{$variable})){
-				if ($line =~ /\s$variable\s{1}/i){
-					$line =~ s/ $variable / \$$variable /;
-				} elsif ($line =~ /$variable[\w]{1}/i){
-					$line =~ s/ $variable / \$$variable/i;
-				} elsif (($line =~ /^$variable\s*=/i) && !($variable =~ /\$/i)){
-					$line =~ s/$variable/\$$variable/i; 
-				} else{
-					$line =~ s/$variable/\$$variable/i;
+				if($line =~ /^(\s*)/){
+					$indentation = $1;
 				}
+				$variable = '$'.$variable;
 			}
 		}
+
+		$line = join(' ', @words);
+		$line = $indentation.$line;
 
 		#checking for range()
 		if ($line =~ /range\(([0-9,]*)\)/){
@@ -152,7 +150,7 @@ sub convert {
 
 	  if ($line =~ /^#!/){
 			$line =~ s/python/perl -w/ig;
-	  } elsif ($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i){	
+	  } elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i) && !($line =~ /[}{]/)){	
      	$line =~ s/$/,"\\n";/ig;
 	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		  $changed = -1;
