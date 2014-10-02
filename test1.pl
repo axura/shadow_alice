@@ -150,8 +150,12 @@ sub convert {
 
 	  if ($line =~ /^#!/){
 			$line =~ s/python/perl -w/ig;
-	  } elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i) && !($line =~ /[}{]/)){	
-     	$line =~ s/$/,"\\n";/ig;
+	  } elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i)){	
+			if (!($line =~ /[}{]/i)){ 
+     		$line =~ s/$/,"\\n";/ig;
+			} else{
+				$line =~ s/$/,"\\n";/ig; 
+			}
 	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		  $changed = -1;
 	  } else{
