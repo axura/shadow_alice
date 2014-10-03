@@ -37,6 +37,14 @@
 	"=" => "="
 );
 
+#other keywords that cannot be used as variables
+%other = (
+  "print" => "print",
+  "for" => "foreach",
+  "sys" => "sys",
+  "import" => "import"
+);
+
 
 sub convert {
 	my @lines = @_;
@@ -46,12 +54,19 @@ sub convert {
 	foreach $line (@lines){
 	  $changed = 0;
     chomp($line);
+    
+    if ($line =~ /^#!/ig){
+      $line =~ s/python/perl -w/;
+      next;
+    }
+
 		#initialising the variable table
-		while ($line =~ /(\w+)\s*=/ig){
+		while ($line =~ /([a-z][a-z0-9_]*)/ig){
 			$variable = $1;
 			#$type = $2;
-			if (!(defined($var{$variable})) && !(defined($functions{$variable}))){
+			if (!(defined($other{$variable})) && !(defined($var{$variable})) && !(defined($functions{$variable}))){
 				$var{$variable} = $variable;
+        print "$variable\n";
 			}
 		}
 
@@ -80,12 +95,6 @@ sub convert {
 		$line = join(' ', @words);
 		$line = $indentation.$line;
 
-		#checking for range()
-		if ($line =~ /range\(([0-9,]*)\)/){
-			$range_expr = $1;
-			print "$range_expr\n";
-		}
-
 		#differentiating if and while loops
 		#for single line loops only
 		if (!($line =~ /:[\s]*$/)){
@@ -103,7 +112,7 @@ sub convert {
 		}
 
 		#checking for multiline
-		#print "curr: $curr_indentation pre: $pre_indlen\n";
+#print "curr: $curr_indentation pre: $pre_indlen\n";
 		#case: enters mutliline if/while loop
 		if ($pre_indlen < $curr_indentation){
 			$multiline_statement = 1;
@@ -113,10 +122,9 @@ sub convert {
 			$line =~ s/^/$indentation}\n/i;
 		}
 
-
-		if ($line =~ /:\s*$/i){
+		if ($line =~ /:}*\s*$/i){
 			if ($line =~ /^([\s]*)(\w+)/i){
-			#print "multiline: $line";
+#print "multiline: $line";
 				$function = $2;
 				$multiline_statement = 1;
 				$pre_indlen = length($1);
@@ -129,7 +137,24 @@ sub convert {
 			}
 		}
 		$pre_indlen = $curr_indentation; #update the indentation
-	
+
+    #check for range() foreach function
+    if ($line =~ /for/){
+      $line =~ s/for\(/foreach/ig;
+      $line =~ s/in //ig;
+      $line =~ s/\){/{/ig;
+      if ($line =~ /range\(([0-9,\ ]+)\)/ig){
+        $range_expr = $1;
+        print "$range_expr\n";
+        if ($range_expr =~ /([0-9]+)\s*,\s*([0-9]+)/i){
+          $min = int($1);
+          $max = int($2)-1;
+          print "min:$min max:$max\n";
+          $line =~ s/$range_expr/$min..$max/i;
+          $line =~ s/range//ig;
+        }
+      }
+    }
 
 		#check for imported modules like sys. 
 		if ($line =~ /import sys/i){
