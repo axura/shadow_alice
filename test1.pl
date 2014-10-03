@@ -61,12 +61,11 @@ sub convert {
     }
 
 		#initialising the variable table
-		while ($line =~ /([a-z][a-z0-9_]*)/ig){
+		while ($line =~ /(\w+)\s*=/ig){
 			$variable = $1;
 			#$type = $2;
-			if (!(defined($other{$variable})) && !(defined($var{$variable})) && !(defined($functions{$variable}))){
+			if (!(defined($var{$variable})) && !(defined($functions{$variable})) && !defined($other{$variable})){
 				$var{$variable} = $variable;
-        print "$variable\n";
 			}
 		}
 
@@ -75,6 +74,21 @@ sub convert {
 			$curr_indentation = length($1);
 			$indentation = $1;
 		}
+
+		#remove the module
+		if ($line =~ /import ([a-z]+)/){
+			$line = "";
+			my $module = $1;
+		}
+		if ($line =~ /sys.stdout.write/){
+			$module = "sys.stdout";
+		} elsif ($line =~ /sys.stdin.readline/){
+			$module = "sys.stdin";
+		}
+
+    if ($line =~ /len\(/){
+        $line =~ s/len\(/length\(/ig;
+    }
 
 		#comparator change for numerals:
 		$line =~ s/<=>/!=/ig;
@@ -145,12 +159,14 @@ sub convert {
       $line =~ s/\){/{/ig;
       if ($line =~ /range\(([0-9,\ ]+)\)/ig){
         $range_expr = $1;
-        print "$range_expr\n";
         if ($range_expr =~ /([0-9]+)\s*,\s*([0-9]+)/i){
           $min = int($1);
           $max = int($2)-1;
-          print "min:$min max:$max\n";
           $line =~ s/$range_expr/$min..$max/i;
+          $line =~ s/range//ig;
+        } elsif ($range_expr =~ /([0-9]+)/i){
+          $max = int($1)-1;
+          $line =~ s/$range_expr/0..$max/i;
           $line =~ s/range//ig;
         }
       }
@@ -183,6 +199,14 @@ sub convert {
 			}
 	  } elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		  $changed = -1;
+		} elsif ($module = "sys.stdout"){
+#			$temp = $line;
+#			$temp =~ s/sys.stdout.write/chomp/ig;
+			$line =~ s/[\)\(]//ig;
+			$line =~ s/sys.stdout.write/print /ig;
+			$line =~ s/\s*$/;/ig;
+		} elsif ($module = "sys.stdin"){
+			
 	  } else{
 		  $changed = 1;
 		  $line =~ s/$/;/ig;
