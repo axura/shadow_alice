@@ -5,9 +5,9 @@
 
 %functions = (
 	"if" => "if",
+	"elif" => "elsif",
 	"else" => "else",
-	"while" => "while",
-	"elif" => "elsif"
+	"while" => "while"
 );
 
 %loopfunctions = (
@@ -128,7 +128,7 @@ sub convert {
 				}
 			}
 		}
-		$pre_indlen = $curr_indentation; 
+		$pre_indlen = $curr_indentation; #update the indentation
 	
 
 		#check for imported modules like sys. 
@@ -141,7 +141,7 @@ sub convert {
     	$arg1 = $1;
     	$comp = $2;
     	$arg2 = $3;
-    	if (($arg1 =~ /\d+/) || ($arg2 =~ /\d+/)){
+    	if (($arg1 =~ /\d+/) || ($arg2 =~ /\d+/) && defined($numcmp{$comp})){
     	  $line =~ s/$comp/$numcmp{$comp}/ig;
     	} elsif (defined($strcmp{$comp})){
     	  $line =~ s/$comp/$strcmp{$comp}/ig;
