@@ -42,8 +42,34 @@
   "print" => "print",
   "for" => "foreach",
   "sys" => "sys",
-  "import" => "import"
+  "import" => "import",
+	"in" => "in",
+  "range" => "range",
+  "len" => "length"
 );
+
+sub convertVar{
+	my $check = $line;
+	$check =~ s/:/ :/ig;
+  $check =~ s/\)/ \) /ig;
+  $check =~ s/\(/ \( /ig;
+# $check =~ s/[\+\*\/\-]/ [\+\*\/\-] /ig;
+  if ($line =~ /^(\s*)/i){
+    $indentation = $1;
+  }
+	my @words = split(' ',$check);
+  foreach my $word (@words){
+    if (($word =~ /\w+/i) && ($word =~ /^[a-z]/i)){
+      if(!defined($functions{$word}) && !defined($loopfunctions{$word}) && !defined($other{$word})){
+        $var{$word} = $word;
+        $word = '$'.$word;
+      }
+    }
+  }
+  $check = join(' ', @words);
+  $check = $indentation.$check;
+	return $check;
+}
 
 
 sub convert {
@@ -59,15 +85,6 @@ sub convert {
       $line =~ s/python/perl -w/;
       next;
     }
-
-		#initialising the variable table
-		while ($line =~ /(\w+)\s*=/ig){
-			$variable = $1;
-			#$type = $2;
-			if (!(defined($var{$variable})) && !(defined($functions{$variable})) && !defined($other{$variable})){
-				$var{$variable} = $variable;
-			}
-		}
 
 		#read the current indentation
 		if ($line =~ /^(\s*)/){
@@ -93,20 +110,7 @@ sub convert {
 		#comparator change for numerals:
 		$line =~ s/<=>/!=/ig;
 
-		#changing the variables
-		@words = split(' ', $line);
-		foreach $variable (@words){
-		#while ($line =~ m/\s+([\w+])\s*/ig || $line =~ m/^([\w+])\s*/ig){
-			chomp($variable);
-			if (defined($var{$variable})){
-				if($line =~ /^(\s*)/){
-					$indentation = $1;
-				}
-				$variable = '$'.$variable;
-			}
-		}
-
-		$line = join(' ', @words);
+		$line = &convertVar($line);
 		$line = $indentation.$line;
 
 		#differentiating if and while loops
