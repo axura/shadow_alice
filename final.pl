@@ -94,7 +94,7 @@ sub convertmult{
 			$lines[$index-1] =~ s/$/\n$indentation}/ig;
 			#$line =~ s/^/\n$indentation}/ig;
 			if ($curr_indlen == 0){
-				print "end of nested loop\n";
+				#print "end of nested loop\n";
 				$multiline_statement = 0;
 			}
 	 							
