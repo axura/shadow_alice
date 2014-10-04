@@ -90,9 +90,11 @@ sub convertmult{
 				$line =~ s/:\s*$/ {/i;
 			}
 	}
+
 	if ($pre_indentation > $curr_indlen){
-			$lines[$index-1] =~ s/$/\n$indentation}/ig;
-			#$line =~ s/^/\n$indentation}/ig;
+			print "$line\n";
+			#$lines[$index-1] =~ s/$/\n$indentation}/ig;
+			$line =~ s/^/\n$indentation}/ig;
 			if ($curr_indlen == 0){
 				#print "end of nested loop\n";
 				$multiline_statement = 0;
@@ -141,7 +143,7 @@ foreach $line (@lines) {
 		#if (($line =~ /if\s[\$\w].+:\s\w+/) || ($line =~ /while\s[\$\w].+:\s\w+/)){
 		$line = &convertsingle($line);
 		$singlestatement = 1;
-	} elsif ($line =~ /:/) {
+	} elsif ($line =~ /:/ || $multiline_statement == 1) {
 		$line = &convertmult($line);
 	}
 
