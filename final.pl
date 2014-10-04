@@ -82,17 +82,26 @@ sub convertsingle{
 sub convertmult{
 	my $curr_indent = $indentation;
 	if ($line =~ /^([\s]*)(\w+)/i){
-			print "multiline: $line";
-#				$function = $2;
-#				$multiline_statement = 1;
-#				$pre_indlen = length($1);
-#				if (!($line =~ /else/) && !defined($other{$function})){ 
-#					$line =~ s/$function/$function(/;
-#					$line =~ s/:\s*$/ ){/i;
-#				} else {
-#					$line =~ s/:\s*$/ {/i;
-#				}
-#					$line =~ s/\n/;\n/ig;					
+			$curr_indlen = length($1);
+			$function = $2;			
+			if ($multiline_statement == 0){
+				$multiline_statement = 1;
+			}
+#			print "pre: $pre_indentation curr: $curr_indlen\n";
+			if (($line !~ /else/) && !defined($other{$function})){
+				$line =~ s/$function/$function(/;
+				$line =~ s/:\s*$/ ){/i;				
+			} elsif ($line =~ /else/) {
+				$line =~ s/:\s*$/ {/i;
+			}
+			if ($pre_indentation > $curr_indlen){
+				$lines[$index-1] =~ s/$/\n$indentation}/ig;
+				#$line =~ s/^/\n$indentation}/ig;
+				if ($curr_indlen == 0){
+					$multiline_statements = 0;
+				}
+			} 		
+					
 	}
 	return $line;
 }
@@ -119,26 +128,31 @@ sub printfunction{
 
 @lines = <STDIN>;
 $pre_indentation = 0;
+$index = 0;
 
 foreach $line (@lines) {
 	chomp ($line);
 	$line = &convertVar($line);
   $line = $indentation.$line;
 	if ($line =~ /^(\s*)/){
-		$pre_indentation = length($1);
+		$curr_indentation = length($1);
 		$indentation = $1;
 	}
+
+	print "pre: $pre_indentation curr: $curr_indlen $line\n";
 
 	if (!($line =~ /:[\s]*$/)){
 		#if (($line =~ /if\s[\$\w].+:\s\w+/) || ($line =~ /while\s[\$\w].+:\s\w+/)){
 		$line = &convertsingle($line);
 		$singlestatement = 1;
 	} elsif ($line =~ /:/) {
-		#$line = &convertmult($line);
+		$line = &convertmult($line);
 	}
-	
+
+	$pre_indentation = $curr_indentation;
 	$line = &printfunction($line);
 	$singlestatement = 0;
+	$index += 1;
 }
 
 foreach $line (@lines){
