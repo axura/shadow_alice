@@ -60,20 +60,16 @@ sub convertsingle{
 		} elsif (defined($loopfunctions{$function})){
       $line =~ s/$function/$loopfunctions{$function}/ig;
 		}
-		if ($line =~ /(print\s*[\$][\w]+;)/){
-			$print_expr = $1;
-			print "print expr: $print_expr\n";
-			$line =~ s/$print_expr/$print_expr@@/ig;
-			print "print convert: $line\n"; 
+
+		@operations = split('\n', $line);
+		foreach $op (@operations){
+			if ($op =~ /print/){				
+				$temp = $op;
+				$op =~ s/;/,"\\n";/ig;
+				$line =~ s/$temp/$op/ig;
+			}
 		}
-#		@operations = split('\n', $line);
-#		foreach $op (@operations){
-#			if ($op =~ /print/){				
-#				$temp = $op;
-#				$op =~ s/;/,"\\n";/ig;
-#				$line =~ s/$temp/$op/ig;
-#			}
-#		}
+		$line = join("\n",@operations);
 		
 	}
 	return $line;
@@ -139,7 +135,7 @@ foreach $line (@lines) {
 		$indentation = $1;
 	}
 
-	print "pre: $pre_indentation curr: $curr_indlen $line\n";
+	print "pre: $pre_indentation curr: $curr_indentation $line\n";
 
 	if (!($line =~ /:[\s]*$/)){
 		#if (($line =~ /if\s[\$\w].+:\s\w+/) || ($line =~ /while\s[\$\w].+:\s\w+/)){
