@@ -83,21 +83,21 @@ sub convertmult{
 			if ($multiline_statement == 0){
 				$multiline_statement = 1;
 			}
-#			print "pre: $pre_indentation curr: $curr_indlen\n";
 			if (($line !~ /else/) && !defined($other{$function})){
 				$line =~ s/$function/$function(/;
 				$line =~ s/:\s*$/ ){/i;				
 			} elsif ($line =~ /else/) {
 				$line =~ s/:\s*$/ {/i;
 			}
-			if ($pre_indentation > $curr_indlen){
-				$lines[$index-1] =~ s/$/\n$indentation}/ig;
-				#$line =~ s/^/\n$indentation}/ig;
-				if ($curr_indlen == 0){
-					$multiline_statements = 0;
-				}
-			} 		
-					
+	}
+	if ($pre_indentation > $curr_indlen){
+			$lines[$index-1] =~ s/$/\n$indentation}/ig;
+			#$line =~ s/^/\n$indentation}/ig;
+			if ($curr_indlen == 0){
+				print "end of nested loop\n";
+				$multiline_statement = 0;
+			}
+	 							
 	}
 	return $line;
 }
@@ -125,7 +125,7 @@ sub printfunction{
 @lines = <STDIN>;
 $pre_indentation = 0;
 $index = 0;
-
+$multiline_statement = 0;
 foreach $line (@lines) {
 	chomp ($line);
 	$line = &convertVar($line);
