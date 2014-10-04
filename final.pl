@@ -55,8 +55,8 @@ sub convertsingle{
 			print "$functions{$function}\n";
 			$line =~ s/$function/$function(/ig;					
       $line =~ s/:\s/){\n\t/ig;
-			$line =~ s/\s*$/\n}/ig;
-			$line =~ s/;\s*/;\n$indentation\t/ig;
+			$line =~ s/;\s*/;\n$indentation\t/ig;			
+			$line =~ s/\s*$/;\n}/ig;
 		} elsif (defined($loopfunctions{$function})){
       $line =~ s/$function/$loopfunctions{$function}/ig;
 		}
@@ -77,7 +77,7 @@ sub convertmult{
 				} else {
 					$line =~ s/:\s*$/ {/i;
 				}
-					$line =~ s/\n/;\n/ig;
+					$line =~ s/\n/;\n/ig;					
 			}
 }
 
@@ -85,17 +85,16 @@ sub printfunction{
 	if ($line =~ /^#!/){
 		print "case1\n";
 		$line =~ s/python/perl -w/ig;
-	} elsif($singlestatement == 1) {
-		print "case single\n";
-		$line =~ s/\n/;\n/ig;
-		#$line =~ s/\n/;\n/;
 	}	elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i)){	
 		if (!($line =~ /[}{]/i)){ 
 			print "case2\n";
      	$line =~ s/$/,"\\n";/ig;
 		} else{
 			print "case3\n";
-			$line =~ s/$/,"\\n";/ig; 
+			if ($line =~ /print\s$(\w+)/){
+				$variable = $1;
+				$line =~ s/print\s$(\w+)/print\s$variable,"\\n";/ig; 
+			}
 		}
 	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		print "case 4\n";	
@@ -129,7 +128,7 @@ foreach $line (@lines) {
 	}
 	
 	$line = &printfunction($line);
-
+	$singlestatement = 0;
 }
 
 foreach $line (@lines){
