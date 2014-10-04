@@ -76,9 +76,7 @@ sub convertsingle{
 }
 
 sub convertmult{
-	my $curr_indent = $indentation;
 	if ($line =~ /^([\s]*)(\w+)/i){
-			$curr_indlen = length($1);
 			$function = $2;			
 			if ($multiline_statement == 0){
 				$multiline_statement = 1;
@@ -89,17 +87,6 @@ sub convertmult{
 			} elsif ($line =~ /else/) {
 				$line =~ s/:\s*$/ {/i;
 			}
-	}
-
-	if ($pre_indentation > $curr_indlen){
-			print "$line\n";
-			#$lines[$index-1] =~ s/$/\n$indentation}/ig;
-			$line =~ s/^/\n$indentation}/ig;
-			if ($curr_indlen == 0){
-				#print "end of nested loop\n";
-				$multiline_statement = 0;
-			}
-	 							
 	}
 	return $line;
 }
@@ -146,11 +133,29 @@ foreach $line (@lines) {
 	} elsif ($line =~ /:/ || $multiline_statement == 1) {
 		$line = &convertmult($line);
 	}
+			if ($pre_indentation > $curr_indentation){
+			print "$line\n";
+			$lines[$index-1] =~ s/$/\n$indentation}/ig;
+			#$line =~ s/^/\n$indentation}/ig;
+			if ($curr_indentation == 0){
+				#print "end of nested loop\n";
+				$multiline_statement = 0;
+			}	 							
+		}
+	
 
 	$pre_indentation = $curr_indentation;
 	$line = &printfunction($line);
 	$singlestatement = 0;
 	$index += 1;
+
+	if ($pre_indentation > $curr_indentation){
+		print "$line\n";
+		$lines[$index-1] =~ s/$/\n$indentation}/ig;
+		if ($curr_indentation == 0){
+			$multiline_statement = 0;
+		}	 							
+	}
 }
 
 foreach $line (@lines){
