@@ -23,6 +23,18 @@
   "len" => "length"
 );
 
+%numcmp = (
+  "<=>" => "!=",
+  "<" => "<",
+  ">" => ">",
+  "==" => "==",
+  "<=" => "<=",
+  "=>" => "=>",
+  "!=" => "!=",
+	"=" => "="
+);
+
+
 sub convertVar{
 	my $check = $line;
 	$check =~ s/:/ :/ig;
@@ -91,6 +103,39 @@ sub convertmult{
 	return $line;
 }
 
+sub checknumcmp{
+	if ($line =~ /(\w+) ([<>=].*?) (\w+)/ig){
+    	$arg1 = $1;
+    	$comp = $2;
+    	$arg2 = $3;
+		if (($arg1 =~ /\d+/) || ($arg2 =~ /\d+/) || defined($numcmp{$comp})){
+			$line =~ s/$comp/$numcmp{$comp}/ig;
+		}
+	}
+}
+
+sub checkrange{
+	print"hello $line\n";
+  $line =~ s/for/foreach/ig;
+  $line =~ s/in //ig;
+  $line =~ s/:;/{/ig;
+  if ($line =~ /range\s*(\([0-9,\ ]+\))/ig){
+    $range_expr = $1;
+      if ($range_expr =~ /([0-9]+)\s*,\s*([0-9]+)/i){
+        $min = int($1);
+        $max = int($2)-1;
+        $line =~ s/$range_expr/$min..$max/i;
+        $line =~ s/range//ig;
+      } elsif ($range_expr =~ /([0-9]+)/i){
+        $max = int($1)-1;
+        $line =~ s/$range_expr/0..$max/i;
+        $line =~ s/range//ig;
+      }
+    }
+	$line =~ s/in//ig;  
+	return $line;
+}
+
 sub printfunction{
 	if ($line =~ /^#!/){
 		print "case1\n";
@@ -133,16 +178,17 @@ foreach $line (@lines) {
 	} elsif ($line =~ /:/ || $multiline_statement == 1) {
 		$line = &convertmult($line);
 	}
-			if ($pre_indentation > $curr_indentation){
-			print "$line\n";
-			$lines[$index-1] =~ s/$/\n$indentation}/ig;
-			#$line =~ s/^/\n$indentation}/ig;
-			if ($curr_indentation == 0){
-				#print "end of nested loop\n";
-				$multiline_statement = 0;
-			}	 							
-		}
-	
+	if ($pre_indentation > $curr_indentation){
+		print "$line\n";
+		$lines[$index-1] =~ s/$/\n$indentation}/ig;
+		#$line =~ s/^/\n$indentation}/ig;
+		if ($curr_indentation == 0){
+			#print "end of nested loop\n";
+			$multiline_statement = 0;
+		}	 							
+	}
+
+	$line =~ s/<=>/!=/ig;
 
 	$pre_indentation = $curr_indentation;
 	$line = &printfunction($line);
@@ -155,6 +201,10 @@ foreach $line (@lines) {
 		if ($curr_indentation == 0){
 			$multiline_statement = 0;
 		}	 							
+	}
+
+	if ($line =~ /for/){
+		$line = &checkrange($line);
 	}
 }
 
