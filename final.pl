@@ -48,64 +48,93 @@ sub convertVar{
 }
 
 sub convertsingle{
-	$check = $line;
-	if ($line =~ /(\w+\s.+:)\s\w+/){
-		$condition = $1;
-		$condition =~ s/if/if \(/ig;
-		$condition =~ s/while/while \(/ig;
-		$condition =~ s/:/){\n/ig;
-	}
-#	$check =~ s/if/if(/i;
-#	$check =~ s/while/while(/i;
-#	$check =~ s/:/){\n/i;
-#	print "singleline: $line\n";
-		$operations = $check;
-		$operations =~ s/if\s.+://ig;
-		$operations =~ s/while\s.+://ig;
-		@lines = split(';', $operations);
-		foreach $action (@lines){
-			#$action =~ s/$/\n/i;
-			$action =~ s/^\s*/$indentation\t/i;
-		}
-		$operations = join("\n", @lines);
-		#print "operation: $operations\n";
-		$operations = $operations."\n".$indentation."\n}";
-		$operations = $condition.$operations;
 
-	return $operations;
+	if ($line =~ /^([\w]+)\s*/){
+		$function = $1;
+		if (defined($functions{$function})){
+			print "$functions{$function}\n";
+			$line =~ s/$function/$function(/ig;					
+      $line =~ s/:\s/){\n\t/ig;
+			$line =~ s/\s*$/\n}/ig;
+			$line =~ s/;\s*/;\n$indentation\t/ig;
+		} elsif (defined($loopfunctions{$function})){
+      $line =~ s/$function/$loopfunctions{$function}/ig;
+		}
+	}
+	return $line;
 }
 
+sub convertmult{
+	my $curr_indent = $indentation;
+	if ($line =~ /^([\s]*)(\w+)/i){
+#print "multiline: $line";
+				$function = $2;
+				$multiline_statement = 1;
+				$pre_indlen = length($1);
+				if (!($line =~ /else/) && !defined($other{$function})){ 
+					$line =~ s/$function/$function(/;
+					$line =~ s/:\s*$/ ){/i;
+				} else {
+					$line =~ s/:\s*$/ {/i;
+				}
+					$line =~ s/\n/;\n/ig;
+			}
+}
 
-while ($line = <>) {
-	chomp ($line);
-
-	$line = &convertVar($line);
-  $line = $indentation.$line;
-
-	if (($line =~ /if\s.+:\s\w+/) || ($line =~ /while\s.+:\s\w+/)){
-		print "hello\n";
-		$line = &convertsingle($line);
-	}
-
-	if ($line =~ /^#!/) {	
-		# translate #! line 		
+sub printfunction{
+	if ($line =~ /^#!/){
+		print "case1\n";
 		$line =~ s/python/perl -w/ig;
-	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/) {
-		# Blank & comment lines can be passed unchanged		
-		#$change = 0;
-	} elsif ($line =~ /\s*print\s*"(.*)"\s*$/ || $line =~ /print/) {
-		# Python's print print a new-line character by default
-		# so we need to add it explicitly to the Perl print statement
-		$line =~ s/\s*$/,"\\n";/ig;
-	} else {
-		# Lines we can't translate are turned into comments
+	} elsif($singlestatement == 1) {
+		print "case single\n";
+		$line =~ s/\n/;\n/ig;
+		#$line =~ s/\n/;\n/;
+	}	elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i)){	
+		if (!($line =~ /[}{]/i)){ 
+			print "case2\n";
+     	$line =~ s/$/,"\\n";/ig;
+		} else{
+			print "case3\n";
+			$line =~ s/$/,"\\n";/ig; 
+		}
+	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
+		print "case 4\n";	
+	  $changed = -1;
+	} else{
+		print "case 5\n";
+		$changed = 1;
 		$line =~ s/$/;/ig;
 	}
+	return $line;
+}
 
-	print "$line\n";
+@lines = <STDIN>;
+$pre_indentation = 0;
+
+foreach $line (@lines) {
+	chomp ($line);
+	$line = &convertVar($line);
+  $line = $indentation.$line;
+	if ($line =~ /^(\s*)/){
+		$pre_indentation = length($1);
+		$indentation = $1;
+	}
+
+	if (!($line =~ /:[\s]*$/)){
+		#if (($line =~ /if\s[\$\w].+:\s\w+/) || ($line =~ /while\s[\$\w].+:\s\w+/)){
+		$line = &convertsingle($line);
+		$singlestatement = 1;
+	} elsif ($line =~ /:/) {
+		#$line = &convertmult($line);
+	}
+	
+	$line = &printfunction($line);
 
 }
 
+foreach $line (@lines){
+		print "$line\n";
+}
 
 =begin comment
 	if ($line =~ /^#!/) {	
