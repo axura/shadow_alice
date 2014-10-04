@@ -60,6 +60,21 @@ sub convertsingle{
 		} elsif (defined($loopfunctions{$function})){
       $line =~ s/$function/$loopfunctions{$function}/ig;
 		}
+		if ($line =~ /(print\s*[\$][\w]+;)/){
+			$print_expr = $1;
+			print "print expr: $print_expr\n";
+			$line =~ s/$print_expr/$print_expr@@/ig;
+			print "print convert: $line\n"; 
+		}
+#		@operations = split('\n', $line);
+#		foreach $op (@operations){
+#			if ($op =~ /print/){				
+#				$temp = $op;
+#				$op =~ s/;/,"\\n";/ig;
+#				$line =~ s/$temp/$op/ig;
+#			}
+#		}
+		
 	}
 	return $line;
 }
@@ -67,18 +82,19 @@ sub convertsingle{
 sub convertmult{
 	my $curr_indent = $indentation;
 	if ($line =~ /^([\s]*)(\w+)/i){
-#print "multiline: $line";
-				$function = $2;
-				$multiline_statement = 1;
-				$pre_indlen = length($1);
-				if (!($line =~ /else/) && !defined($other{$function})){ 
-					$line =~ s/$function/$function(/;
-					$line =~ s/:\s*$/ ){/i;
-				} else {
-					$line =~ s/:\s*$/ {/i;
-				}
-					$line =~ s/\n/;\n/ig;					
-			}
+			print "multiline: $line";
+#				$function = $2;
+#				$multiline_statement = 1;
+#				$pre_indlen = length($1);
+#				if (!($line =~ /else/) && !defined($other{$function})){ 
+#					$line =~ s/$function/$function(/;
+#					$line =~ s/:\s*$/ ){/i;
+#				} else {
+#					$line =~ s/:\s*$/ {/i;
+#				}
+#					$line =~ s/\n/;\n/ig;					
+	}
+	return $line;
 }
 
 sub printfunction{
@@ -89,12 +105,6 @@ sub printfunction{
 		if (!($line =~ /[}{]/i)){ 
 			print "case2\n";
      	$line =~ s/$/,"\\n";/ig;
-		} else{
-			print "case3\n";
-			if ($line =~ /print\s$(\w+)/){
-				$variable = $1;
-				$line =~ s/print\s$(\w+)/print\s$variable,"\\n";/ig; 
-			}
 		}
 	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		print "case 4\n";	
@@ -135,23 +145,3 @@ foreach $line (@lines){
 		print "$line\n";
 }
 
-=begin comment
-	if ($line =~ /^#!/) {	
-		# translate #! line 		
-		print "#!/usr/bin/perl -w\n";
-	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/) {
-		# Blank & comment lines can be passed unchanged		
-		print $line;
-	} elsif ($line =~ /\s*print\s*"(.*)"\s*$/) {
-		# Python's print print a new-line character by default
-		# so we need to add it explicitly to the Perl print statement
-		
-		print "print \"$1\\n\";\n";
-	} else {
-	
-		# Lines we can't translate are turned into comments
-		
-    print "$line;\n";
-	}
-}
-=end comment
