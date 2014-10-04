@@ -43,7 +43,6 @@ sub convertVar{
 	$check =~ s/:/ :/ig;
   $check =~ s/\)/ \) /ig;
   $check =~ s/\(/ \( /ig;
-# $check =~ s/[\+\*\/\-]/ [\+\*\/\-] /ig;
   if ($line =~ /^(\s*)/i){
     $indentation = $1;
   }
@@ -67,7 +66,6 @@ sub convertsingle{
 	if ($line =~ /^([\w]+)\s*/){
 		$function = $1;
 		if (defined($functions{$function})){
-			print "$functions{$function}\n";
 			$line =~ s/$function/$function(/ig;					
       $line =~ s/:\s/){\n\t/ig;
 			$line =~ s/;\s*/;\n$indentation\t/ig;			
@@ -118,7 +116,6 @@ sub checknumcmp{
 }
 
 sub checkrange{
-	print"hello $line\n";
   $line =~ s/for/foreach/ig;
   $line =~ s/in //ig;
   $line =~ s/:;/{/ig;
@@ -157,18 +154,14 @@ sub checkmodule{
 
 sub printfunction{
 	if ($line =~ /^#!/){
-		print "case1\n";
 		$line =~ s/python/perl -w/ig;
 	}	elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i)){	
 		if (!($line =~ /[}{]/i)){ 
-			print "case2\n";
-     	$line =~ s/$/,"\\n";/ig;
+		 	$line =~ s/$/,"\\n";/ig;
 		}
 	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
-		print "case 4\n";	
-	  $changed = -1;
+		 $changed = -1;
 	} else{
-		print "case 5\n";
 		$changed = 1;
 		$line =~ s/$/;/ig;
 	}
@@ -196,7 +189,7 @@ foreach $line (@lines) {
 		$indentation = $1;
 	}
 
-	print "pre: $pre_indentation curr: $curr_indentation $line\n";
+	#print "pre: $pre_indentation curr: $curr_indentation $line\n";
 
 	if (!($line =~ /:[\s]*$/)){
 		$line = &convertsingle($line);
@@ -219,7 +212,6 @@ foreach $line (@lines) {
 	$index += 1;
 
 	if ($pre_indentation > $curr_indentation){
-		print "$line\n";
 		$lines[$index-1] =~ s/$/\n$indentation}/ig;
 		if ($curr_indentation == 0){
 			$multiline_statement = 0;
