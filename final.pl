@@ -20,7 +20,10 @@
   "import" => "import",
   "in" => "in",
   "range" => "range",
-  "len" => "length"
+  "len" => "length",
+	"sys" => "sys",
+	"sys.stdout.write" => "sys.stdout.write",
+	"sys.stdin.read" => "sys.stdin.read"
 );
 
 %numcmp = (
@@ -136,6 +139,22 @@ sub checkrange{
 	return $line;
 }
 
+sub checkmodule{
+	if ($module =~ /sys/){
+		if ($line =~ /sys.stdout.write/){
+			$line =~ s/sys.stdout.write/print /;
+			$line =~ s/\)//ig;
+			$line =~ s/\(//ig;
+		} elsif ($line =~ /sys.stdin.read\(([0-9]*)\)/){
+			$i = $1;
+			if ($i !~ /\d/){
+				$line =~ s/sys.stdin.read()/<STDIN>/ig;
+			} 
+		}
+	}
+	return $line;
+}
+
 sub printfunction{
 	if ($line =~ /^#!/){
 		print "case1\n";
@@ -162,6 +181,14 @@ $index = 0;
 $multiline_statement = 0;
 foreach $line (@lines) {
 	chomp ($line);
+	if ($line =~ /import (\w+)/){
+		$module = $1;
+		$line = "";
+	}
+	if (defined($module)){
+		$line = &checkmodule($line);
+	}
+
 	$line = &convertVar($line);
   $line = $indentation.$line;
 	if ($line =~ /^(\s*)/){
@@ -172,18 +199,14 @@ foreach $line (@lines) {
 	print "pre: $pre_indentation curr: $curr_indentation $line\n";
 
 	if (!($line =~ /:[\s]*$/)){
-		#if (($line =~ /if\s[\$\w].+:\s\w+/) || ($line =~ /while\s[\$\w].+:\s\w+/)){
 		$line = &convertsingle($line);
 		$singlestatement = 1;
 	} elsif ($line =~ /:/ || $multiline_statement == 1) {
 		$line = &convertmult($line);
 	}
 	if ($pre_indentation > $curr_indentation){
-		print "$line\n";
 		$lines[$index-1] =~ s/$/\n$indentation}/ig;
-		#$line =~ s/^/\n$indentation}/ig;
 		if ($curr_indentation == 0){
-			#print "end of nested loop\n";
 			$multiline_statement = 0;
 		}	 							
 	}
@@ -202,7 +225,10 @@ foreach $line (@lines) {
 			$multiline_statement = 0;
 		}	 							
 	}
-
+	
+	if (defined($module) && $module =~ /sys/ && $line =~ /print\s["\$]/){
+			$line =~ s/,"\\n"//ig;
+	}
 	if ($line =~ /for/){
 		$line = &checkrange($line);
 	}
