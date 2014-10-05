@@ -31,7 +31,8 @@
 	"sys" => "sys",
 	"sys.stdout.write" => "sys.stdout.write",
 	"sys.stdin.read" => "sys.stdin.read",
-	"return" => "return"
+	"return" => "return",
+	"dict" => "dict"
 );
 
 %numcmp = (
@@ -48,12 +49,33 @@
 
 sub convertVar{
 	my $check = $line;
+
 	$check =~ s/:/ :/ig;
   $check =~ s/\)/ \) /ig;
   $check =~ s/\(/ \( /ig;
   if ($line =~ /^(\s*)/i){
     $indentation = $1;
   }
+	if ($line =~ /(\w+)\s*=\s*{/ig){
+		$variable = $1;
+		print "dict: $line\n";
+		if ($line =~ /}\s*$/ && $dict == 0){
+			$line =~ s/{\s*/\(\n\t/ig;
+			$line =~ s/$variable =/\%$variable =/i;
+			$line =~ s/\s*:/ =>/ig;
+			$line =~ s/,\s*/,\n\t/ig;
+			$line =~ s/}\s*/\n\)/ig;
+		} elsif ($dict == 1){
+			$line =~ s/\s*:/ =>/ig;
+			$line =~ s/,/,\n/ig;
+			if ($line =~ /}\s*$/){
+				$dict = 0;
+			}
+		}
+
+		return $line;
+	}
+
 	my @words = split(' ',$check);
   foreach my $word (@words){
     if (($word =~ /\w+/i) && ($word =~ /^[a-z]/ig || $word =~ /^["']/) ){
@@ -189,6 +211,8 @@ $pre_indentation = 0;
 $index = 0;
 $multiline_statement = 0;
 $quotes = 0;
+$dict = 0;
+
 foreach $line (@lines) {
 	chomp ($line);
 	if ($line =~ /import (\w+)/){
@@ -199,14 +223,15 @@ foreach $line (@lines) {
 		$line = &checkmodule($line);
 	}
 
-	$line = &convertVar($line);
-  $line = $indentation.$line;
 	if ($line =~ /^(\s*)/){
 		$curr_indentation = length($1);
 		$indentation = $1;
 	}
 
-	#print "pre: $pre_indentation curr: $curr_indentation $line\n";
+	if ($line !~ /^\s*#/){
+		$line = &convertVar($line);
+  	$line = $indentation.$line;
+	}
 
 	if (!($line =~ /:[\s]*$/)){
 		$line = &convertsingle($line);
