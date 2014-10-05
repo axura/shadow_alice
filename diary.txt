@@ -1,0 +1,318 @@
+commit f3404f105e869932a974472a39cffc345b01a5f0
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Mon Oct 6 01:23:16 2014 +1100
+
+    tested files test00.py to test10.py with final.pl
+
+commit 34e6f26e571df88daa150ad1acdfeda9e14030a3
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 19:10:19 2014 +1100
+
+    modified convertVar to look for dic decalarations, single or multilined
+
+commit 4c74509fe90eebb4d720bb954d9134e7f13361e5
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 18:29:58 2014 +1100
+
+    tested demo04.py demo05.py and demo06.py files
+
+commit ecf0749afd4a5e815985e1ce6638c401a490af01
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 17:58:35 2014 +1100
+
+    tested with demo01.py and reupdated final.pl
+
+commit 089d2065abdbfe5a3ae6add5b0cb65ebf7d51dbe
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 05:05:42 2014 +1100
+
+    removed extra printing flags
+
+commit ae14060fec8f0449798dd2099cd918bd6a26c958
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 05:00:58 2014 +1100
+
+    adding git.tar
+
+commit 91dba9690cadd0c42ef9b26ba21b0f432d9a8cdf
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 04:59:38 2014 +1100
+
+    tested sys module functions for sys.stdout and sys.stdin. have not implemented the part if there is an integer for sys.stdin.read though
+
+commit 07526b56e14544d509e29f0f017a29ad6a65d74f
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 03:46:47 2014 +1100
+
+    made files for testing range and sys. tested to be correct
+
+commit ce22c8762ebb6451edeee0971a4d74d40c6c66cc
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 01:02:55 2014 +1000
+
+    multiline function tested to be alright
+
+commit 3936db30cb32d51db83397b3a1019d6d9f870a54
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 00:21:12 2014 +1000
+
+    updated final.pl rewrote some of the test files
+
+commit f5a14580a2ef747b938581f209a94532b83e6a7b
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 00:15:43 2014 +1000
+
+    updated final.pl for subset 3
+
+commit 8a1beeb0ebaa4b0001e49b889c3d467b7ae32093
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Oct 5 00:13:03 2014 +1000
+
+    updated final.pl for subset 3
+
+commit 0ea337ad444980250f618b6f57f4abd8741a5c71
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 23:57:49 2014 +1000
+
+    tested final.pl with subset1 and subset2 using files written by myself. have found some bugs in subset2. will attempt to rewrite it
+
+commit ecf62fff5c06cc786c00c6d2ebbf181a3d40d8c5
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 23:24:00 2014 +1000
+
+    trying to resolve problem with when to print }
+
+commit f14a07b879e66cdec86e0ac5015baca7d4720626
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 22:49:57 2014 +1000
+
+    reupdated file.pl.
+
+commit 0c30df6326abfa07ff93216b4bc2dd1b726dedc7
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 21:01:16 2014 +1000
+
+    checking the printing cases for statements.
+
+commit 47fb5abd7eab31e1c3f8086bd0c2a34a94315a7d
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 20:23:03 2014 +1000
+
+    tried to test subset2 and test files for the single line statements annd multitline statements after putting into a function
+
+commit 4644225d3308a41fb9035c5c48eec71f38a86138
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Oct 4 00:22:46 2014 +1000
+
+    added some changes to the function for single line statements. found bug in printing. going to fix
+
+commit 5f78242c1980bc4080dc4b9028e66134c5147ce5
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 22:34:31 2014 +1000
+
+    updated test1.pl, found some bugs in subset 3 in translating functions from the sys module
+
+commit a15c4424683bb590842a5d1e75f90523eee74314
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 21:59:14 2014 +1000
+
+    tested variables with test00.py and test01.py
+
+commit 7caf97ab6c34fc2548598db4dbdc57ff8fce8b53
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 18:12:14 2014 +1000
+
+    added part to check for len() function converts to length()
+
+commit 423e6681be824becf379c946fcc57a7914f43c57
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 16:21:54 2014 +1000
+
+    added new function for range
+
+commit b00c2480ca627b2183684565d6fad9beb2f911cf
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 12:17:47 2014 +1000
+
+    resolved bug for multiline statements
+
+commit b533b0294135d1eb16b4461a30eb4194ac40e257
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 03:08:25 2014 +1000
+
+    added some changes to the comments for test1.pl
+
+commit 8ced50cff5203b78afe44dfc0ab9dcfa68191c54
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 03:06:57 2014 +1000
+
+    attempt to fix the bug with multiline sattements for if and while loop
+
+commit 95156af6f7d1de7518485699f71c9a813f8de981
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Fri Oct 3 00:41:53 2014 +1000
+
+    resolved issue with variables again.
+
+commit aa32a55c63ae1e7647e456101b03f34263f3f978
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Thu Oct 2 21:05:36 2014 +1000
+
+    updating test1.pl
+
+commit 6184f14a6c13a02c17e0c79899362b384ffdf02b
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Thu Oct 2 20:18:24 2014 +1000
+
+    multiline loop now works. hopefully
+
+commit e32421e8c7df2672c6366a9ae6406b7543cea589
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Thu Oct 2 16:57:59 2014 +1000
+
+    updated the test1.pl partially works for printing multiline if statements
+
+commit 6fe7e2844ba05105303e93a422829ad25842659c
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Thu Oct 2 04:13:50 2014 +1000
+
+    reupdated test1.pl should have done subset1 and subset2 now
+
+commit 0f5b8fbd8981698b2e37e845b3fecbe06d087025
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Thu Oct 2 03:34:10 2014 +1000
+
+    updated the file test1.pl with new functions for comparators and if/while statements
+
+commit 62b9c2130b8f3e44b96f6ad8c29123005fcb6c23
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Wed Oct 1 22:41:24 2014 +1000
+
+    added new file with fixed bug, optimised code. no new functions. have comments to fix.
+
+commit 7abb523ea4274268ab44bdfbeaab7d15c1689b0a
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Wed Oct 1 14:02:49 2014 +1000
+
+    updated file.pl. problem still not fixed, but everything else works
+
+commit beb768a5391fb5b9716995e234f4882c37ae55c6
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Wed Oct 1 12:15:45 2014 +1000
+
+    resolved function error for file.pl. now need to fix another bug for subset1
+
+commit 7c453678ae1e97ebfaf74fb4d5ec18ceb9fd2fac
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Wed Oct 1 11:56:50 2014 +1000
+
+    fixed the subset 1 variables bug. need to reconvert to function network again
+
+commit ac5f8e1f50569253351afbda25ebd82a003c49a1
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Wed Oct 1 11:04:15 2014 +1000
+
+    added new file file.pl for assignment new method for code
+
+commit a4029027ecc7e4f261c1c9b1bb5a83e1577b81e7
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Tue Sep 30 16:04:12 2014 +1000
+
+    removed the comments, hopefully subset1 bugs are not completed
+
+commit da48756990fc358ed49f2ef2534724e5a5ba9c76
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Tue Sep 30 16:02:25 2014 +1000
+
+    fixed up numerical comparators and hopefully string comparators now
+
+commit 8024adde3f402085aef7f6f9da69ed9810d40fec
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Tue Sep 30 15:11:57 2014 +1000
+
+    added a new numcmp for numerical comparators. the hash will hardly be used most likely
+
+commit 64551795c811fe6b73db6fae351fbbd2c27245bf
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Tue Sep 30 14:17:30 2014 +1000
+
+    added a new copy of the assignment. subset1.pl contains working version for subset1. still need to resolve numeric cmps
+
+commit a92f84e04dae1a41c70c9165324c03a2a4de6194
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Mon Sep 29 17:41:58 2014 +1000
+
+    added new version with some changes to the variables and also conversion of loops. problem still not resolved though
+
+commit a8885823eaee1b8b4c017e2c94eca85a0e262b17
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 21:42:04 2014 +1000
+
+    added a new function for string comparators
+
+commit 68b0bf6625786f5e14e882f589001ae96740b2f8
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 21:23:04 2014 +1000
+
+    fixed a bug in strcmp hash definition
+
+commit cefaf69d1936af591734004e62ac8b30573383c5
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 21:15:35 2014 +1000
+
+    added a new hash for string comparators
+
+commit 58c2f223525b2aa774bd7013116dc61f095e9728
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 20:29:46 2014 +1000
+
+    modified defaultFunctions to check for break and continue statements and convert. also fixed some bugs from the printf regarding if and while loops.
+
+commit 48f0c66a2edd08b69c517cf812eb4499b85789d8
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 19:42:29 2014 +1000
+
+    updated final.pl
+
+commit 204386f87477646cd3adf8f7332f730a08d5f3bd
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 19:40:07 2014 +1000
+
+    fixed problem with printing semicolons at blank lines and print functions
+
+commit 066f0d415a2910c914b7a635fb3470341e0c34fd
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 19:06:35 2014 +1000
+
+    added new function that converts if, while, etc statements. also fixed problem with semicolon printf
+
+commit dae1c98ec252be1a9098f815ff49d559a59f03b6
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sun Sep 28 18:34:36 2014 +1000
+
+    replaced new function for converting variables
+
+commit cbb24b3252ed4066a2556bf58d752eda30a2ee18
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Sep 27 22:38:50 2014 +1000
+
+    added usual test file
+
+commit aced17b2433e9d33bfa00a17edae45aff7ddd899
+Merge: 755a12d 4d48df2
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Sep 27 22:33:50 2014 +1000
+
+    Merge https://github.com/axura/shadow_alice
+
+commit 755a12d3d0707ccafc8424330472e335d2fffc9f
+Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
+Date:   Sat Sep 27 22:32:51 2014 +1000
+
+    added final.pl subset 0-1
+
+commit 4d48df2f2cbab0faa7e907dd37cc1e7c66745bb7
+Author: Yue (Alice) Kang <axura.07@gmail.com>
+Date:   Sat Sep 27 22:29:07 2014 +1000
+
+    Initial commit
