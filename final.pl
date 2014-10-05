@@ -2,6 +2,7 @@
 #
 %var = (); #hash for storing variables
 
+#hash for storing loop functions or if statements
 %functions = (
   "if" => "if",
   "elif" => "elsif",
@@ -9,11 +10,13 @@
   "while" => "while",
 );
 
+#used in the loop functions
 %loopfunctions = (
   "break" => "last",
   "continue" => "next",
 );
 
+#logical operations
 %logic = (
   "or" => "or",
   "not" => "not",
@@ -21,6 +24,7 @@
 	"^" => "xor"
 );
 
+#other important keywords
 %other = (
   "print" => "print",
   "for" => "foreach",
@@ -35,6 +39,7 @@
 	"dict" => "dict"
 );
 
+#comparators for numerals
 %numcmp = (
   "<=>" => "!=",
   "<" => "<",
@@ -46,7 +51,7 @@
 	"=" => "="
 );
 
-
+#function for converting variables
 sub convertVar{
 	my $check = $line;
 
@@ -56,6 +61,7 @@ sub convertVar{
   if ($line =~ /^(\s*)/i){
     $indentation = $1;
   }
+	#if there is a dict declared
 	if ($line =~ /(\w+)\s*=\s*{/ig){
 		$variable = $1;
 		if ($line =~ /}\s*$/ && $dict == 0){
@@ -75,8 +81,10 @@ sub convertVar{
 		return $line;
 	}
 
+	#normal variables
 	my @words = split(' ',$check);
   foreach my $word (@words){
+		print "$word";
     if (($word =~ /\w+/i) && ($word =~ /^[a-z]/ig || $word =~ /^["']/) ){
 			if ($word =~ /^["']/){
 				$quotes = 1;
@@ -194,7 +202,10 @@ sub printfunction{
 		$line =~ s/python/perl -w/ig;
 	}	elsif (($line =~ /^\s*print\s*"(.*)"\s*$/ || $line =~ /print/i)){	
 		if (!($line =~ /[}{]/i)){ 
-		 	$line =~ s/$/,"\\n";/ig;
+			$line =~ s/$/,"\\n";/ig;
+			if ($line =~ /,,/ig){
+				$line =~ s/,,/,/ig;
+			}
 		}
 	} elsif ($line =~ /^\s*#/ || $line =~ /^\s*$/ || $line =~ /[}{]/){
 		 $changed = -1;
