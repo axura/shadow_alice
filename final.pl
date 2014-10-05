@@ -56,11 +56,14 @@ sub convertVar{
   }
 	my @words = split(' ',$check);
   foreach my $word (@words){
-    if (($word =~ /\w+/i) && ($word =~ /^[a-z]/i)){
-			if ($word =~ /["']/){
+    if (($word =~ /\w+/i) && ($word =~ /^[a-z]/ig || $word =~ /^["']/) ){
+			if ($word =~ /^["']/){
 				$quotes = 1;
+			} elsif ($word =~ /["']$/){
+				$quotes = 0;
+				next;
 			}
-			if (!defined($logic{$word}) && ($quotes != 1)){
+			if (!defined($logic{$word}) && ($quotes == 0)){
       	if(!defined($functions{$word}) && !defined($loopfunctions{$word}) && !defined($other{$word})){
         	$var{$word} = $word;
         	$word = '$'.$word;
@@ -185,6 +188,7 @@ sub printfunction{
 $pre_indentation = 0;
 $index = 0;
 $multiline_statement = 0;
+$quotes = 0;
 foreach $line (@lines) {
 	chomp ($line);
 	if ($line =~ /import (\w+)/){
