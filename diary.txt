@@ -26,7 +26,7 @@ commit 089d2065abdbfe5a3ae6add5b0cb65ebf7d51dbe
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Oct 5 05:05:42 2014 +1100
 
-    removed extra printing flags
+    removed extra printing flags used in final.pl
 
 commit ae14060fec8f0449798dd2099cd918bd6a26c958
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -50,25 +50,25 @@ commit ce22c8762ebb6451edeee0971a4d74d40c6c66cc
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Oct 5 01:02:55 2014 +1000
 
-    multiline function tested to be alright
+    multiline function tested to be alright, tested with the given code. Also have resolved any issues with range() function. 
 
 commit 3936db30cb32d51db83397b3a1019d6d9f870a54
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Oct 5 00:21:12 2014 +1000
 
-    updated final.pl rewrote some of the test files
+    updated final.pl rewrote some of the test files.
 
 commit f5a14580a2ef747b938581f209a94532b83e6a7b
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Oct 5 00:15:43 2014 +1000
 
-    updated final.pl for subset 3
+    updated final.pl for subset 3, implemented for case when module sys is added
 
 commit 8a1beeb0ebaa4b0001e49b889c3d467b7ae32093
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Oct 5 00:13:03 2014 +1000
 
-    updated final.pl for subset 3
+    updated final.pl for subset 3, implemented for case when module sys is added
 
 commit 0ea337ad444980250f618b6f57f4abd8741a5c71
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -80,19 +80,19 @@ commit ecf62fff5c06cc786c00c6d2ebbf181a3d40d8c5
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sat Oct 4 23:24:00 2014 +1000
 
-    trying to resolve problem with when to print }
+    trying to resolve problem with when to print },seems to be resolved
 
 commit f14a07b879e66cdec86e0ac5015baca7d4720626
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sat Oct 4 22:49:57 2014 +1000
 
-    reupdated file.pl.
+    reupdated file.pl. Updated the functions in final.pl
 
 commit 0c30df6326abfa07ff93216b4bc2dd1b726dedc7
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sat Oct 4 21:01:16 2014 +1000
 
-    checking the printing cases for statements.
+    checking the printing cases for multiple line statements with the subset3 files, seem to have no problems. 
 
 commit 47fb5abd7eab31e1c3f8086bd0c2a34a94315a7d
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -104,7 +104,7 @@ commit 4644225d3308a41fb9035c5c48eec71f38a86138
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sat Oct 4 00:22:46 2014 +1000
 
-    added some changes to the function for single line statements. found bug in printing. going to fix
+    added some changes to the function for single line statements. found bug in printing. going to fix,decided to move to a separate function
 
 commit 5f78242c1980bc4080dc4b9028e66134c5147ce5
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -128,7 +128,7 @@ commit 423e6681be824becf379c946fcc57a7914f43c57
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Fri Oct 3 16:21:54 2014 +1000
 
-    added new function for range
+    added new function for range, made modifications to the structs, adding entries to the other hash.
 
 commit b00c2480ca627b2183684565d6fad9beb2f911cf
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -146,19 +146,19 @@ commit 8ced50cff5203b78afe44dfc0ab9dcfa68191c54
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Fri Oct 3 03:06:57 2014 +1000
 
-    attempt to fix the bug with multiline sattements for if and while loop
+    attempt to fix the bug with multiline sattements for if and while loop. Problem may be in the indentation
 
 commit 95156af6f7d1de7518485699f71c9a813f8de981
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Fri Oct 3 00:41:53 2014 +1000
 
-    resolved issue with variables again.
+    resolved issue with variables again, that had occured in files with sys module included
 
 commit aa32a55c63ae1e7647e456101b03f34263f3f978
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Thu Oct 2 21:05:36 2014 +1000
 
-    updating test1.pl
+    updating test1.pl after fixing the bug for else statement
 
 commit 6184f14a6c13a02c17e0c79899362b384ffdf02b
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
