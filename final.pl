@@ -58,7 +58,6 @@ sub convertVar{
   }
 	if ($line =~ /(\w+)\s*=\s*{/ig){
 		$variable = $1;
-		print "dict: $line\n";
 		if ($line =~ /}\s*$/ && $dict == 0){
 			$line =~ s/{\s*/\(\n\t/ig;
 			$line =~ s/$variable =/\%$variable =/i;
@@ -185,7 +184,7 @@ sub checkmodule{
 			if ($i !~ /\d/){
 				$line =~ s/sys.stdin.read\(\)/<STDIN>/ig;
 			} 
-		}
+		} 
 	}
 	return $line;
 }
@@ -226,6 +225,9 @@ foreach $line (@lines) {
 	if ($line =~ /^(\s*)/){
 		$curr_indentation = length($1);
 		$indentation = $1;
+		if (!defined($pre_indent)){
+			$pre_indent = $indentation;
+		}
 	}
 
 	if ($line !~ /^\s*#/){
@@ -252,9 +254,10 @@ foreach $line (@lines) {
 	$line = &printfunction($line);
 	$singlestatement = 0;
 	$index += 1;
+	$pre_indent = $indentation;
 
 	if ($pre_indentation > $curr_indentation){
-		$lines[$index-1] =~ s/$/\n$indentation}/ig;
+		$lines[$index-1] =~ s/$/$pre_indent}/ig;
 		if ($curr_indentation == 0){
 			$multiline_statement = 0;
 		}	 							
