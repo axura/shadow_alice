@@ -12,7 +12,14 @@
 %loopfunctions = (
   "break" => "last",
   "continue" => "next",
-  );
+);
+
+%logic = (
+  "or" => "or",
+  "not" => "not",
+  "and" => "and",
+	"^" => "xor"
+);
 
 %other = (
   "print" => "print",
@@ -23,7 +30,8 @@
   "len" => "length",
 	"sys" => "sys",
 	"sys.stdout.write" => "sys.stdout.write",
-	"sys.stdin.read" => "sys.stdin.read"
+	"sys.stdin.read" => "sys.stdin.read",
+	"return" => "return"
 );
 
 %numcmp = (
@@ -49,10 +57,15 @@ sub convertVar{
 	my @words = split(' ',$check);
   foreach my $word (@words){
     if (($word =~ /\w+/i) && ($word =~ /^[a-z]/i)){
-      if(!defined($functions{$word}) && !defined($loopfunctions{$word}) && !defined($other{$word})){
-        $var{$word} = $word;
-        $word = '$'.$word;
-      }
+			if ($word =~ /["']/){
+				$quotes = 1;
+			}
+			if (!defined($logic{$word}) && ($quotes != 1)){
+      	if(!defined($functions{$word}) && !defined($loopfunctions{$word}) && !defined($other{$word})){
+        	$var{$word} = $word;
+        	$word = '$'.$word;
+      	}
+			}
     }
   }
   $check = join(' ', @words);
@@ -145,7 +158,7 @@ sub checkmodule{
 		} elsif ($line =~ /sys.stdin.read\(([0-9]*)\)/){
 			$i = $1;
 			if ($i !~ /\d/){
-				$line =~ s/sys.stdin.read()/<STDIN>/ig;
+				$line =~ s/sys.stdin.read\(\)/<STDIN>/ig;
 			} 
 		}
 	}
