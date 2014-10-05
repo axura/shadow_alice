@@ -164,13 +164,13 @@ commit 6184f14a6c13a02c17e0c79899362b384ffdf02b
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Thu Oct 2 20:18:24 2014 +1000
 
-    multiline loop now works. hopefully
+    multiline loop now works for if and while statements only. Rechecked that there is a special case for else statements
 
 commit e32421e8c7df2672c6366a9ae6406b7543cea589
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Thu Oct 2 16:57:59 2014 +1000
 
-    updated the test1.pl partially works for printing multiline if statements
+    updated the test1.pl partially works for printing multiline if statements. Indentation and finding when to end the function is not occuring at the right places
 
 commit 6fe7e2844ba05105303e93a422829ad25842659c
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -188,13 +188,13 @@ commit 62b9c2130b8f3e44b96f6ad8c29123005fcb6c23
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Wed Oct 1 22:41:24 2014 +1000
 
-    added new file with fixed bug, optimised code. no new functions. have comments to fix.
+    added new file with bug in subset2 fixed, optimised code. no new functions. have comments to fix.
 
 commit 7abb523ea4274268ab44bdfbeaab7d15c1689b0a
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Wed Oct 1 14:02:49 2014 +1000
 
-    updated file.pl. problem still not fixed, but everything else works
+    updated file.pl. problems in subset2 still not fixed, but everything else works
 
 commit beb768a5391fb5b9716995e234f4882c37ae55c6
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -206,61 +206,61 @@ commit 7c453678ae1e97ebfaf74fb4d5ec18ceb9fd2fac
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Wed Oct 1 11:56:50 2014 +1000
 
-    fixed the subset 1 variables bug. need to reconvert to function network again
+    fixed the subset 1 variables bug, which occured in subset2. need to reconvert to function network again
 
 commit ac5f8e1f50569253351afbda25ebd82a003c49a1
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Wed Oct 1 11:04:15 2014 +1000
 
-    added new file file.pl for assignment new method for code
+    added new file file.pl for assignment new method for code. 
 
 commit a4029027ecc7e4f261c1c9b1bb5a83e1577b81e7
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Tue Sep 30 16:04:12 2014 +1000
 
-    removed the comments, hopefully subset1 bugs are not completed
+    removed the comments, hopefully subset1 bugs are completed. Tested to be ok for the given tests files.
 
 commit da48756990fc358ed49f2ef2534724e5a5ba9c76
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Tue Sep 30 16:02:25 2014 +1000
 
-    fixed up numerical comparators and hopefully string comparators now
+    fixed up numerical comparators and hopefully string comparators now. Updated comments for the functions for the functions
 
 commit 8024adde3f402085aef7f6f9da69ed9810d40fec
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Tue Sep 30 15:11:57 2014 +1000
 
-    added a new numcmp for numerical comparators. the hash will hardly be used most likely
+    added a new numcmp for numerical comparators, numeral comparators should be working now. 
 
 commit 64551795c811fe6b73db6fae351fbbd2c27245bf
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Tue Sep 30 14:17:30 2014 +1000
 
-    added a new copy of the assignment. subset1.pl contains working version for subset1. still need to resolve numeric cmps
+    added a new copy of the assignment. subset1.pl contains working version for subset1, intend to use as backup. still need to resolve numeric cmps and single if statements.
 
 commit a92f84e04dae1a41c70c9165324c03a2a4de6194
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Mon Sep 29 17:41:58 2014 +1000
 
-    added new version with some changes to the variables and also conversion of loops. problem still not resolved though
+    added new version with some changes to the variable conversion function and also conversion of loops. problem still not resolved though
 
 commit a8885823eaee1b8b4c017e2c94eca85a0e262b17
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 21:42:04 2014 +1000
 
-    added a new function for string comparators
+    added a new function for string comparators, separate from comparing numeral comparators. 
 
 commit 68b0bf6625786f5e14e882f589001ae96740b2f8
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 21:23:04 2014 +1000
 
-    fixed a bug in strcmp hash definition
+    fixed a bug in strcmp hash definition for test file. 
 
 commit cefaf69d1936af591734004e62ac8b30573383c5
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 21:15:35 2014 +1000
 
-    added a new hash for string comparators
+    added a new hash for string comparators in test file
 
 commit 58c2f223525b2aa774bd7013116dc61f095e9728
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
@@ -272,31 +272,31 @@ commit 48f0c66a2edd08b69c517cf812eb4499b85789d8
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 19:42:29 2014 +1000
 
-    updated final.pl
+    updated final.pl. This is a better sorted version of the code, compared to test.pl
 
 commit 204386f87477646cd3adf8f7332f730a08d5f3bd
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 19:40:07 2014 +1000
 
-    fixed problem with printing semicolons at blank lines and print functions
+    fixed problem with printing semicolons at blank lines and print functions for single if, while and else statements.
 
 commit 066f0d415a2910c914b7a635fb3470341e0c34fd
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 19:06:35 2014 +1000
 
-    added new function that converts if, while, etc statements. also fixed problem with semicolon printf
+    added new function that converts if, while, etc statements. also fixed problem with semicolon printf. 
 
 commit dae1c98ec252be1a9098f815ff49d559a59f03b6
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sun Sep 28 18:34:36 2014 +1000
 
-    replaced new function for converting variables
+    replaced new function for converting variables. Found bugs in the previous where it was registering functions as variables
 
 commit cbb24b3252ed4066a2556bf58d752eda30a2ee18
 Author: Yue Kang <ykan215@cse.unsw.EDU.AU>
 Date:   Sat Sep 27 22:38:50 2014 +1000
 
-    added usual test file
+    added usual test file. this will be the test file to write the draft code
 
 commit aced17b2433e9d33bfa00a17edae45aff7ddd899
 Merge: 755a12d 4d48df2
