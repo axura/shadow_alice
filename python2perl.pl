@@ -84,7 +84,6 @@ sub convertVar{
 	#normal variables
 	my @words = split(' ',$check);
   foreach my $word (@words){
-		print "$word";
     if (($word =~ /\w+/i) && ($word =~ /^[a-z]/ig || $word =~ /^["']/) ){
 			if ($word =~ /^["']/){
 				$quotes = 1;
