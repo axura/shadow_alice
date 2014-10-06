@@ -214,8 +214,14 @@ sub printfunction{
 	}
 	return $line;
 }
-
-@lines = <STDIN>;
+$arglen = @ARGV;		
+if ($arglen == 0){
+	@lines = <STDIN>;
+} else {
+	open( F, "$ARGV[0]");
+	@lines = <F>;
+	close F;
+}
 $pre_indentation = 0;
 $index = 0;
 $multiline_statement = 0;
